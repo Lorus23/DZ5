@@ -10,7 +10,7 @@ $controllerName = "Image";
 $actionName = "index";
 
 if (sizeof($routes) > 2) {
-    list(, $controllerName, $actionName, $parameter) = $routes;
+    list(, $controllerName, $actionName) = $routes;
 }
 try {
     $className = '\App\Controllers\\' . ucfirst($controllerName) . 'Controller';// \App\Posts

@@ -8,6 +8,7 @@ class ImageController extends MainController
 {
     protected $origin = PUBLIC_PATH . '/photo-original.jpg';
     protected $result = PUBLIC_PATH . '/photo.jpg';
+    protected $sample = PUBLIC_PATH . '/Sample.png';
 
     public function index()
     {
@@ -18,48 +19,20 @@ class ImageController extends MainController
 
     public function process()
     {
-        $image = IImage::make($this->origin)
-            ->rotate(45);
+        $image = IImage::make($this->origin);
+//            ->rotate(45);
+        $image->insert($this->sample);
 
-        $image->insert('Sample.png');
-        $watermark = Image::make($this->result);
+
+        $watermark = IImage::make($this->result);
         $image->insert($watermark, 'center');
 
-// insert watermark at bottom-right corner with 10px offset
-        $image->insert('Sample.png', 'bottom-right', 10, 10)
-//            ->text('SALE')
-//        $image->text('photo_origin', 0, 0, function ($font) {
-//            $font->file('arial.ttf');
-//            $font->size(24);
-//            $font->color('#fdf6e3');
-//            $font->align('center');
-//            $font->valign('top');
-//        })
-            ->resize(200, 200)
-            ->save($this->result, 100);
+        $image->insert($this->result, 'bottom-right', 10, 10)
+                ->resize(200, 200)
+
+                ->save($this->result, 100);
 
         echo 'succes';
     }
-
-    public function watermark()
-    {
-        $img = Image::make($this->origin);
-
-// write text
-        $img->text('SALE');
-
-// use callback to define details
-        $img->text('photo_origin', 0, 0, function ($font) {
-            $font->file('arial.ttf');
-            $font->size(24);
-            $font->color('#fdf6e3');
-            $font->align('center');
-            $font->valign('top');
-        })
-            ->save($this->result, 80);
-
-
-    }
-
 
 }
